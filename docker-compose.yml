@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  mysql:
+    build:
+      context: .
+      dockerfile: docker.mysql.yml
+    container_name: php_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: payhack
+      MYSQL_DATABASE: payhack
+      MYSQL_USER: payhack
+      MYSQL_PASSWORD: payhack
+    ports:
+      - "3306:3306"
+  web:
+    build:
+      context: .
+      dockerfile: docker.php.yml
+    container_name: php_web
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    ports:
+      - "80:80"
+    stdin_open: true
+    tty: true
